@@ -1,0 +1,18 @@
+node {
+  stage("Clone the project") {
+    git branch: 'master', url: 'https://github.com/'
+  }
+
+  stage("Compile Project") {
+    sh "./mvnw clean install "
+  }
+
+  stage("Tests and Deployment") {
+    stage("Runing unit tests") {
+      sh "./mvnw test"
+    }
+    stage("Deployment") {
+      sh './mvnw spring-boot:run -Dserver.port=8080'
+    }
+  }
+}
